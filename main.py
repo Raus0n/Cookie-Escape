@@ -28,9 +28,19 @@ while running:
     if key[pygame.K_d]:
         for stripe in tile_group:
             stripe.x_slide = 1
-    else:
+    if key[pygame.K_a]:
+        for stripe in tile_group:
+            stripe.x_slide = -1
+    if key[pygame.K_s]:
+        for stripe in tile_group:
+            stripe.y_slide = 1
+    if key[pygame.K_w]:
+        for stripe in tile_group:
+            stripe.y_slide = -1
+    if not key[pygame.K_d] and not key[pygame.K_a] and not key[pygame.K_w] and not key[pygame.K_s]:
         for stripe in tile_group:
             stripe.x_slide = 0
+            stripe.y_slide = 0
 
     tile_group.update()
     tile_group.draw(screen)
