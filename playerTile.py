@@ -5,6 +5,9 @@ from tiles import Tile
 class PlayerTile(Tile):
     def __init__(self, size, pos) -> None:
         super().__init__(size, pos)
+        self.image.fill("grey")
+        self.direction = pygame.math.Vector2(0,0)
+        self.speed = 2
 
 
     def get_input(self):
@@ -25,5 +28,3 @@ class PlayerTile(Tile):
         
     def update(self):
         self.get_input()
-        self.rect.x += self.direction.x
-        self.rect.y += self.direction.y

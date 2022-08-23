@@ -1,19 +1,18 @@
 import pygame
+from level import Level
 from playerTile import PlayerTile
 from tiles import Tile
+import settings
 
 pygame.init()
 
-SCREEN_HEIGHT = 600
-SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 960
+SCREEN_WIDTH = 960
 
 screen = pygame.display.set_mode((SCREEN_WIDTH , SCREEN_HEIGHT))
 pygame.display.set_caption("Based Game")
 
-player_group = pygame.sprite.GroupSingle()
-player = PlayerTile(64 , (111 , 111))
-player_group.add(player)
-
+level = Level(settings.level_map , screen)
 
 
 running = True
@@ -25,6 +24,5 @@ while running:
             running = False
 
 
-    player_group.update()
-    player_group.draw(screen)
+    level.run()
     pygame.display.update()

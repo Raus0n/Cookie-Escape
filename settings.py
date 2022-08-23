@@ -1,0 +1,17 @@
+level_map = [
+"XXXXXXXXXXXXXXX",
+"X             X",
+"X             X",
+"X             X",
+"X             X",
+"X             X",
+"X             X",
+"X             X",
+"X             X",
+"X             X",
+"X             X",
+"X             X",
+"X      P      X",
+"X             X",
+"XXXXXXXXXXXXXXX",
+]
