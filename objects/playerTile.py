@@ -1,11 +1,10 @@
 import pygame
 
-from tiles import Tile
+from shapes.tiles import Tile
 
 class PlayerTile(Tile):
-    def __init__(self, size, pos) -> None:
-        super().__init__(size, pos)
-        self.image.fill("grey")
+    def __init__(self, size, pos, color) -> None:
+        super().__init__(size, pos, color)
         self.direction = pygame.math.Vector2(0,0)
         self.speed = 2
 

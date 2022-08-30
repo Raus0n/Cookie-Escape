@@ -1,7 +1,5 @@
 import pygame
 from level import Level
-from playerTile import PlayerTile
-from tiles import Tile
 import settings
 
 pygame.init()
