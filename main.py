@@ -1,6 +1,6 @@
 import pygame
 from level import Level
-from playerTile import PlayerTile
+from objects.playerTile import PlayerTile
 from shapes.tiles import Tile
 from shapes.circle import Circle
 import settings

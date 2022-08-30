@@ -1,5 +1,5 @@
 import pygame
-from playerTile import PlayerTile
+from objects.playerTile import PlayerTile
 
 from shapes.tiles import Tile
 class Level:
