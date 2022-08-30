@@ -1,7 +1,7 @@
 import pygame
 from playerTile import PlayerTile
 
-from tiles import Tile
+from shapes.tiles import Tile
 class Level:
 
     def __init__(self, level_data , surface):
@@ -18,11 +18,11 @@ class Level:
                 x = col_index * 64
                 y = row_index * 64
                 if cell == "X":
-                    tile = Tile(64 ,(x,y))
+                    tile = Tile(64 ,(x,y) , "black")
                     self.tiles.add(tile)
 
                 if cell == "P":
-                    player = PlayerTile(64 , (x ,y))
+                    player = PlayerTile(64 , (x ,y) , "grey")
                     self.player.add(player)
 
     def horizontal_movement_collision(self):
