@@ -18,9 +18,13 @@ pygame.display.set_caption("Based Game")
 level = Level(settings.level_map , screen)
 
 def main():
+    
+    
+    
+    clock = pygame.time.Clock()
     running = True
     while running:
-
+        clock.tick(FPS)
         screen.fill((255,255,255))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
