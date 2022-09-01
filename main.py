@@ -17,15 +17,18 @@ pygame.display.set_caption("Based Game")
 
 level = Level(settings.level_map , screen)
 
+
+def draw_screen():
+    screen.fill((255,255,255))
+    #şuraya çizilecek şeyleri koycaz işte, buraya level,resim vs koyacaksanız ayarlarsınız. bu arada resim loadlamak da çok kolaymış mesela örnek:
+    pygame.display.update()
 def main():
-    
-    
     
     clock = pygame.time.Clock()
     running = True
     while running:
         clock.tick(FPS)
-        screen.fill((255,255,255))
+        draw_screen()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -33,4 +36,7 @@ def main():
 
 
     level.run()
-    pygame.display.update()
+    
+
+if __name__ == "__main__":
+    main()
