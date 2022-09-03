@@ -1,5 +1,6 @@
 import pygame
 from objects.playerTile import PlayerTile
+from objects.tmnf import TMNFCar
 
 from shapes.tiles import Tile
 class Level:
@@ -12,6 +13,7 @@ class Level:
     def setup_level(self, level_layout):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.tmnf_group = pygame.sprite.GroupSingle()
 
         for row_index, row in enumerate(level_layout):
             for col_index, cell in enumerate(row):
@@ -24,6 +26,11 @@ class Level:
                 if cell == "P":
                     player = PlayerTile(64 , (x ,y) , "grey")
                     self.player.add(player)
+
+                if cell == "T":
+                    tmnfcar = TMNFCar((x , y))
+                    self.tmnf_group.add(tmnfcar)
+                    
 
     def horizontal_movement_collision(self):
         player = self.player.sprite
@@ -52,6 +59,8 @@ class Level:
         self.player.update()
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
+        self.tmnf_group.draw(self.surface)
+        self.tmnf_group.update()
         self.player.draw(self.surface)
         self.tiles.draw(self.surface)
 

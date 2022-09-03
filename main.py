@@ -23,25 +23,27 @@ level = Level(settings.level_map , screen)
 
 
 def draw_screen(tmnf):
-    screen.fill((255,255,255))
     screen.blit(TRACKMANIA_CAR_IMAGE, (tmnf.x,tmnf.y))
     #şuraya çizilecek şeyleri koycaz işte, buraya level,resim vs koyacaksanız ayarlarsınız. bu arada resim loadlamak da çok kolaymış mesela örnek:
     pygame.display.update()
+
+
+
 def main():
-    tmnf = pygame.Rect(100, 300, 105,80)
+    # tmnf = pygame.Rect(100, 300, 105,80)
     clock = pygame.time.Clock()
+    clock.tick(FPS)
     running = True
     while running:
-        clock.tick(FPS)
-        draw_screen(tmnf)
+        # draw_screen(tmnf)
+        screen.fill("white")
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
 
-
-    level.run()
-    
+        level.run()
+        pygame.display.update()    
 
 if __name__ == "__main__":
     main()
