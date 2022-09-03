@@ -1,12 +1,10 @@
 import pygame
 
-class TMNFCar(pygame.sprite.Sprite):
-    def __init__(self , pos) -> None:
-        super().__init__()
-        self.image = pygame.image.load("tm car.png")
-        self.image = pygame.transform.rotate(self.image , 90)
-        self.image = pygame.transform.scale(self.image , (64 ,64))
-        self.rect = self.image.get_rect(topleft = pos)
+from shapes.image import ImageSprite
+
+class TMNFCar(ImageSprite):
+    def __init__(self,pos, rotate, scale) -> None:
+        super().__init__("./resources/images/tm car.png" , pos, rotate, scale)
 
 
     def update(self) -> None:

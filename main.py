@@ -7,7 +7,7 @@ pygame.init()
 SCREEN_HEIGHT = 960
 SCREEN_WIDTH = 960
 
-TRACKMANIA_CAR = pygame.image.load("tm car.png")
+TRACKMANIA_CAR = pygame.image.load("./resources/images/tm car.png")
 TRACKMANIA_CAR_IMAGE = pygame.transform.scale(TRACKMANIA_CAR, (105,80))
 TRACKMANIA_CAR_IMAGE = pygame.transform.rotate(TRACKMANIA_CAR_IMAGE, 40)
 

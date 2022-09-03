@@ -28,7 +28,7 @@ class Level:
                     self.player.add(player)
 
                 if cell == "T":
-                    tmnfcar = TMNFCar((x , y))
+                    tmnfcar = TMNFCar((100 , 100) , 90 , (64 , 64))
                     self.tmnf_group.add(tmnfcar)
                     
 
