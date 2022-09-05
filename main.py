@@ -1,6 +1,6 @@
 import pygame
 from level import Level
-import settings,os
+import levels.level1 as level1,os
 
 pygame.init()
 
@@ -19,14 +19,13 @@ FPS = 60
 screen = pygame.display.set_mode((SCREEN_WIDTH , SCREEN_HEIGHT))
 pygame.display.set_caption("Based Game")
 
-level = Level(settings.level_map , screen)
+level = Level(level1.level_map , screen)
 
 
 def draw_screen(tmnf):
     screen.blit(TRACKMANIA_CAR_IMAGE, (tmnf.x,tmnf.y))
     #şuraya çizilecek şeyleri koycaz işte, buraya level,resim vs koyacaksanız ayarlarsınız. bu arada resim loadlamak da çok kolaymış mesela örnek:
     pygame.display.update()
-
 
 
 def main():

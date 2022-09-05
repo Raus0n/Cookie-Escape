@@ -1,7 +1,8 @@
 import pygame
 from objects.playerTile import PlayerTile
 from objects.tmnf import TMNFCar
-
+import levels.level1 as level1
+from shapes.borderTile import BorderTile
 from shapes.tiles import Tile
 class Level:
 
@@ -10,7 +11,8 @@ class Level:
         self.surface = surface
         self.world_shift_x = 0
         self.world_shift_y = 0
-        self.setup_level(level_data)
+        self.world_border = 64
+        self.setup_level(level_data , 1)
 
     def world_shifter(self):
         player = self.player.sprite
@@ -18,16 +20,16 @@ class Level:
         playerY = player.rect.centery
         directionX = player.direction.x
         directionY = player.direction.y
-        if playerX < (960 / 10) and directionX < 0:
+        if playerX < self.world_border and directionX < 0:
             self.world_shift_x = 2
             player.speed = 0
-        elif playerX > 960 - (960 / 10) and directionX > 0:
+        elif playerX > 960 - self.world_border and directionX > 0:
             self.world_shift_x = -2
             player.speed = 0
-        elif playerY < (960 / 10) and directionY < 0:
+        elif playerY < self.world_border and directionY < 0:
             self.world_shift_y = 2
             player.speed = 0
-        elif playerY > 960 - (960 / 10) and directionY > 0:
+        elif playerY > 960 - self.world_border and directionY > 0:
             self.world_shift_y = -2
             player.speed = 0
         else:
@@ -35,19 +37,21 @@ class Level:
             self.world_shift_y = 0
             player.speed = 2
 
-        
-        
-        
 
-    def setup_level(self, level_layout):
+    def setup_level(self, level_layout , level_number):
         self.tiles = pygame.sprite.Group()
+        self.level_trigger = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.tmnf_group = pygame.sprite.GroupSingle()
 
+        if level_number == 1:
+            level_x_offset = level1.level_offset_x
+            level_y_offset = level1.level_offset_y
+
         for row_index, row in enumerate(level_layout):
             for col_index, cell in enumerate(row):
-                x = col_index * 64
-                y = row_index * 64
+                x = (col_index - level_x_offset) * 64
+                y = (row_index - level_y_offset) * 64
                 if cell == "X":
                     tile = Tile(64 ,(x,y) , "black")
                     self.tiles.add(tile)
@@ -56,9 +60,11 @@ class Level:
                     player = PlayerTile(64 , (x ,y) , "grey")
                     self.player.add(player)
 
-                if cell == "T":
-                    tmnfcar = TMNFCar((100 , 100) , 90 , (64 , 64))
-                    self.tmnf_group.add(tmnfcar)
+                if cell == "b":
+                    level_trigger = BorderTile((x,y) , (2,2))
+                    self.level_trigger.add(level_trigger)
+
+                
                     
 
     def horizontal_movement_collision(self):
@@ -72,6 +78,8 @@ class Level:
                 if player.direction.x < 0:
                     player.rect.left = tile.rect.right
 
+
+
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.rect.y += player.direction.y * player.speed
@@ -83,8 +91,17 @@ class Level:
                 if player.direction.y < 0:
                     player.rect.top = tile.rect.bottom
 
+    def level_change_collision(self):
+        player = self.player.sprite
+        for borderTile in self.level_trigger.sprites():
+            if borderTile.rect.colliderect(player.rect):
+                print("level change")
+
 
     def run(self):
+        self.level_change_collision()
+        self.level_trigger.draw(self.surface)
+        self.level_trigger.update(self.world_shift_x , self.world_shift_y)
         self.player.update()
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
