@@ -18,16 +18,16 @@ class Level:
         playerY = player.rect.centery
         directionX = player.direction.x
         directionY = player.direction.y
-        if playerX < (960 / 4) and directionX < 0:
+        if playerX < (960 / 10) and directionX < 0:
             self.world_shift_x = 2
             player.speed = 0
-        elif playerX > 960 - (960 / 4) and directionX > 0:
+        elif playerX > 960 - (960 / 10) and directionX > 0:
             self.world_shift_x = -2
             player.speed = 0
-        elif playerY < (960 / 4) and directionY < 0:
+        elif playerY < (960 / 10) and directionY < 0:
             self.world_shift_y = 2
             player.speed = 0
-        elif playerY > 960 - (960 / 4) and directionY > 0:
+        elif playerY > 960 - (960 / 10) and directionY > 0:
             self.world_shift_y = -2
             player.speed = 0
         else:
