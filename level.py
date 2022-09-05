@@ -99,18 +99,22 @@ class Level:
 
 
     def run(self):
+
+        #Collisions
         self.level_change_collision()
-        self.level_trigger.draw(self.surface)
-        self.level_trigger.update(self.world_shift_x , self.world_shift_y)
-        self.player.update()
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
-        self.tmnf_group.draw(self.surface)
-        self.tmnf_group.update()
-        self.player.draw(self.surface)
+
+        #Updates
         self.world_shifter()
-        self.tiles.draw(self.surface)
+        self.level_trigger.update(self.world_shift_x , self.world_shift_y)
         self.tiles.update(self.world_shift_x , self.world_shift_y)
+        self.player.update()
+
+        #Drawings
+        self.level_trigger.draw(self.surface)
+        self.player.draw(self.surface)
+        self.tiles.draw(self.surface)
 
 
     
