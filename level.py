@@ -8,7 +8,36 @@ class Level:
     def __init__(self, level_data , surface):
         self.level_data = level_data
         self.surface = surface
+        self.world_shift_x = 0
+        self.world_shift_y = 0
         self.setup_level(level_data)
+
+    def world_shifter(self):
+        player = self.player.sprite
+        playerX = player.rect.centerx
+        playerY = player.rect.centery
+        directionX = player.direction.x
+        directionY = player.direction.y
+        if playerX < (960 / 10) and directionX < 0:
+            self.world_shift_x = 2
+            player.speed = 0
+        elif playerX > 960 - (960 / 10) and directionX > 0:
+            self.world_shift_x = -2
+            player.speed = 0
+        elif playerY < (960 / 10) and directionY < 0:
+            self.world_shift_y = 2
+            player.speed = 0
+        elif playerY > 960 - (960 / 10) and directionY > 0:
+            self.world_shift_y = -2
+            player.speed = 0
+        else:
+            self.world_shift_x = 0
+            self.world_shift_y = 0
+            player.speed = 2
+
+        
+        
+        
 
     def setup_level(self, level_layout):
         self.tiles = pygame.sprite.Group()
@@ -62,7 +91,9 @@ class Level:
         self.tmnf_group.draw(self.surface)
         self.tmnf_group.update()
         self.player.draw(self.surface)
+        self.world_shifter()
         self.tiles.draw(self.surface)
+        self.tiles.update(self.world_shift_x , self.world_shift_y)
 
 
     
