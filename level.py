@@ -75,10 +75,8 @@ class Level:
             if tile.rect.colliderect(player.rect):
                 if player.direction.x > 0:
                     player.rect.right = tile.rect.left
-                    player.virtual_can_change = False
                 if player.direction.x < 0:
                     player.rect.left = tile.rect.right
-                    player.virtual_can_change = False
 
 
 
