@@ -2,7 +2,7 @@ import pygame
 from objects.playerTile import PlayerTile
 from objects.tmnf import TMNFCar
 import levels.level1 as level1
-from shapes.borderTile import BorderTile
+from objects.borderTile import BorderTile
 from shapes.tiles import Tile
 class Level:
 
