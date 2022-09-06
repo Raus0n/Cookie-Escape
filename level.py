@@ -2,7 +2,9 @@ import pygame
 from objects.playerTile import PlayerTile
 from objects.tmnf import TMNFCar
 import levels.level1 as level1
+import levels.level2 as level2
 from objects.borderTile import BorderTile
+from shapes.invisibleTile import InvisibleTile
 from shapes.tiles import Tile
 class Level:
 
@@ -47,6 +49,9 @@ class Level:
         if level_number == 1:
             level_x_offset = level1.level_offset_x
             level_y_offset = level1.level_offset_y
+        elif level_number == 2:
+            level_x_offset = level2.level_offset_x
+            level_y_offset = level2.level_offset_y
 
         for row_index, row in enumerate(level_layout):
             for col_index, cell in enumerate(row):
@@ -61,8 +66,15 @@ class Level:
                     self.player.add(player)
 
                 if cell == "b":
-                    level_trigger = BorderTile((x,y) , (2,2))
+                    invisibleTile = InvisibleTile((x,y))
+                    self.tiles.add(invisibleTile)
+
+                try:
+                    cell = int(cell)
+                    level_trigger = BorderTile((x,y) , (2,2) , cell)
                     self.level_trigger.add(level_trigger)
+                except:
+                    pass
 
                 
                     
@@ -95,7 +107,7 @@ class Level:
         player = self.player.sprite
         for borderTile in self.level_trigger.sprites():
             if borderTile.rect.colliderect(player.rect):
-                print("level change")
+                print(f"Level changed to {borderTile.level_trigger_number}")
 
 
     def run(self):
