@@ -3,6 +3,7 @@ from objects.playerTile import PlayerTile
 from objects.tmnf import TMNFCar
 import levels.level1 as level1
 import levels.level2 as level2
+import levels.level3 as level3
 from objects.borderTile import BorderTile
 from shapes.invisibleTile import InvisibleTile
 from shapes.tiles import Tile
@@ -52,6 +53,9 @@ class Level:
         elif level_number == 2:
             level_x_offset = level2.level_offset_x
             level_y_offset = level2.level_offset_y
+        elif level_number == 3:
+            level_x_offset = level3.level_offset_x
+            level_y_offset = level3.level_offset_y
 
         for row_index, row in enumerate(level_layout):
             for col_index, cell in enumerate(row):
@@ -91,7 +95,6 @@ class Level:
                     player.rect.left = tile.rect.right
 
 
-
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.rect.y += player.direction.y * player.speed
@@ -119,6 +122,10 @@ class Level:
                     level_number = 2
                     self.setup_level(level_layout , level_number)
                     self.player.sprite.rect.x = temp
+                elif borderTile.level_trigger_number == 3:
+                    level_layout = level3.level_map
+                    level_number = 3
+                    self.setup_level(level_layout ,level_number)
 
 
     def run(self):
