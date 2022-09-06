@@ -107,7 +107,18 @@ class Level:
         player = self.player.sprite
         for borderTile in self.level_trigger.sprites():
             if borderTile.rect.colliderect(player.rect):
-                print(f"Level changed to {borderTile.level_trigger_number}")
+                if borderTile.level_trigger_number == 1:
+                    temp = self.player.sprite.rect.x
+                    level_layout = level1.level_map
+                    level_number = 1
+                    self.setup_level(level_layout , level_number)
+                    self.player.sprite.rect.x = temp
+                elif borderTile.level_trigger_number == 2:
+                    temp = self.player.sprite.rect.x
+                    level_layout = level2.level_map
+                    level_number = 2
+                    self.setup_level(level_layout , level_number)
+                    self.player.sprite.rect.x = temp
 
 
     def run(self):
