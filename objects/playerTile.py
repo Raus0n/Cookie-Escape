@@ -6,7 +6,7 @@ class PlayerTile(Tile):
     def __init__(self, size, pos, color) -> None:
         super().__init__(size, pos, color)
         self.direction = pygame.math.Vector2(0,0)
-        self.speed = 2
+        self.speed = 1
 
 
     def get_input(self):
