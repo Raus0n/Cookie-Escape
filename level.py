@@ -15,6 +15,7 @@ class Level:
         self.world_shift_x = 0
         self.world_shift_y = 0
         self.world_border = 64
+        self.level_number = 1
         self.setup_level(level_data , 1)
 
     def world_shifter(self):
@@ -46,6 +47,7 @@ class Level:
         self.level_trigger = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.tmnf_group = pygame.sprite.GroupSingle()
+        self.level_number = level_number
 
         if level_number == 1:
             level_x_offset = level1.level_offset_x
@@ -111,11 +113,18 @@ class Level:
         for borderTile in self.level_trigger.sprites():
             if borderTile.rect.colliderect(player.rect):
                 if borderTile.level_trigger_number == 1:
-                    temp = self.player.sprite.rect.x
-                    level_layout = level1.level_map
-                    level_number = 1
-                    self.setup_level(level_layout , level_number)
-                    self.player.sprite.rect.x = temp
+                    if self.level_number == 2:
+                        temp = self.player.sprite.rect.x
+                        level_layout = level1.level_map
+                        level_number = 1
+                        self.setup_level(level_layout , level_number)
+                        self.player.sprite.rect.x = temp
+                    elif self.level_number == 3:
+                        temp = self.player.sprite.rect.y
+                        level_layout = level1.level_map
+                        level_number = 1
+                        self.setup_level(level_layout , level_number)
+                        self.player.sprite.rect.y = temp
                 elif borderTile.level_trigger_number == 2:
                     temp = self.player.sprite.rect.x
                     level_layout = level2.level_map
