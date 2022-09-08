@@ -12,7 +12,9 @@ class PlayerTile(Tile):
         self.rect = self.image.get_rect(topleft = pos)
         self.rotation = 0
         self.direction = pygame.math.Vector2(0,0)
-        self.speed = 2
+        self.speed = 1
+        
+        self.armed = False
 
 
     def get_input(self):
@@ -48,9 +50,21 @@ class PlayerTile(Tile):
 
         self.rotation = int(self.rotation)
         self.image = self.original_image
-        self.image = pygame.transform.scale(self.image , (96 , 96))
+        if not self.armed:
+            self.image = pygame.transform.scale(self.image , (64 , 64))
+        else:
+            self.image = pygame.transform.scale(self.image , (96 , 96))
         self.image = pygame.transform.rotate(self.image , self.rotation)
         self.rect = self.image.get_rect(center = self.rect.center)
+
+
+    def arm(self):
+        self.armed = True
+        self.original_image = pygame.image.load("resources\\images\\gunned_player_cookie.png")
+        self.image = self.original_image
+        self.image = pygame.transform.scale(self.image , (128,128))
+        self.rect = self.image.get_rect(center = self.rect.center)
+
 
 
 

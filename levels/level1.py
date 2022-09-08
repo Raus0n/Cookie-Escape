@@ -4,7 +4,7 @@ level_map = [
 "b3       XXXXXXXXXXXXXXXXX            4b",
 "b3                                    4b",
 "b3                                    4b",
-"b3                                    4b",
+"b3                          G         4b",
 "b3                                    4b",
 "b3                                    4b",
 "b3                                    4b",
