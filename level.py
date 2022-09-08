@@ -4,6 +4,7 @@ from objects.tmnf import TMNFCar
 import levels.level1 as level1
 import levels.level2 as level2
 import levels.level3 as level3
+import levels.level4 as level4
 from objects.borderTile import BorderTile
 from shapes.invisibleTile import InvisibleTile
 from objects.killerTile import KillerTile
@@ -27,7 +28,7 @@ class Level:
         directionX = player.direction.x
         directionY = player.direction.y
         if playerX < self.world_border and directionX < 0:
-            self.world_shift_x = 1
+            self.world_shift_x = 2
             player.speed = 0
         elif playerX > 960 - self.world_border and directionX > 0:
             self.world_shift_x = -2
@@ -41,7 +42,7 @@ class Level:
         else:
             self.world_shift_x = 0
             self.world_shift_y = 0
-            player.speed = 1
+            player.speed = 2
 
     def laybrinth_shifter(self):
         player = self.player.sprite
@@ -62,7 +63,7 @@ class Level:
         else:
             self.world_shift_x = 0
             self.world_shift_y = 0
-            player.speed = 1
+            player.speed = 2
 
     def setup_level(self, level_layout , level_number):
         self.tiles = pygame.sprite.Group()
@@ -81,6 +82,10 @@ class Level:
         elif level_number == 3:
             level_x_offset = level3.level_offset_x
             level_y_offset = level3.level_offset_y
+        elif level_number == 4:
+            level_x_offset = level4.level_offset_x
+            level_y_offset = level4.level_offset_y
+            
 
         for row_index, row in enumerate(level_layout):
             for col_index, cell in enumerate(row):
@@ -115,9 +120,9 @@ class Level:
 
         for killer in self.killer_group.sprites():
             if killer.rect.colliderect(player.rect):
-                    level_layout = level3.level_map
-                    self.level_number = 3
-                    self.setup_level(level_layout ,self.level_number)
+                self.player_dead = True
+                self.world_shift_x = 0
+                self.world_shift_y = 0
                 
 
 
@@ -155,7 +160,7 @@ class Level:
                         self.level_number = 1
                         self.setup_level(level_layout , self.level_number)
                         self.player.sprite.rect.x = temp
-                    elif self.level_number == 3:
+                    elif self.level_number == 3 or self.level_number == 4:
                         temp = self.player.sprite.rect.y
                         level_layout = level1.level_map
                         self.level_number = 1
@@ -171,6 +176,13 @@ class Level:
                     level_layout = level3.level_map
                     self.level_number = 3
                     self.setup_level(level_layout ,self.level_number)
+                elif borderTile.level_trigger_number == 4:
+                    temp = self.player.sprite.rect.y
+                    level_layout = level4.level_map
+                    self.level_number = 4
+                    self.setup_level(level_layout , self.level_number)
+                    self.player.sprite.rect.y = temp
+
 
 
     def run(self):
@@ -182,20 +194,26 @@ class Level:
         self.kill_collision_check()
 
         #Updates
-        if  self.level_number == 3:
-            self.laybrinth_shifter()
-        else:
-            self.world_shifter()
+        if not self.player_dead:
+            if  self.level_number == 3:
+                self.laybrinth_shifter()
+            else:
+                self.world_shifter()
 
         self.killer_group.update(self.world_shift_x , self.world_shift_y)
         self.level_trigger.update(self.world_shift_x , self.world_shift_y)
         self.tiles.update(self.world_shift_x , self.world_shift_y)
-        self.player.update()
+        if not self.player_dead:
+            self.player.update()
+        elif self.player_dead == True:
+            self.world_shift_x = 0
+            self.world_shift_y = 0
 
         #Drawings
         self.killer_group.draw(self.surface)
         self.level_trigger.draw(self.surface)
-        self.player.draw(self.surface)
+        if not self.player_dead:
+            self.player.draw(self.surface)
         self.tiles.draw(self.surface)
 
 
