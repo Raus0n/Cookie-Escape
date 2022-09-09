@@ -13,4 +13,4 @@ class Lazer(pygame.sprite.Sprite):
         self.rect.x += self.direction.x
         self.rect.y += self.direction.y
         if (self.rect.x < 0 or self.rect.x > 960) or (self.rect.y < 0 or self.rect.y > 960):
-            self.kill()
+            self.remove()

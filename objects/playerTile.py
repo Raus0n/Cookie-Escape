@@ -47,8 +47,21 @@ class PlayerTile(Tile):
         x_interval = mouse_x - player_pos_x
         y_interval = mouse_y - player_pos_y
 
+        rot = math.atan(y_interval / x_interval)
+
+        print(rot)
+
+        x = math.cos(rot)
+        y = math.sin(rot)
+
+
         self.last_shot = 0
         lazer = Lazer((self.rect.right , self.rect.top))
+
+        lazer.direction.x = x
+        lazer.direction.y = y
+        pygame.transform.rotate(lazer.image , self.rotation)
+
         self.lazers_shot.add(lazer)
         
         
