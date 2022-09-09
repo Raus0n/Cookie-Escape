@@ -51,7 +51,7 @@ class PlayerTile(Tile):
         self.rotation = int(self.rotation)
         self.image = self.original_image
         if not self.armed:
-            self.image = pygame.transform.scale(self.image , (64 , 64))
+            self.image = pygame.transform.scale(self.image , (96 , 96))
         else:
             self.image = pygame.transform.scale(self.image , (96 , 96))
         self.image = pygame.transform.rotate(self.image , self.rotation)
@@ -62,7 +62,7 @@ class PlayerTile(Tile):
         self.armed = True
         self.original_image = pygame.image.load("resources\\images\\gunned_player_cookie.png")
         self.image = self.original_image
-        self.image = pygame.transform.scale(self.image , (128,128))
+        self.image = pygame.transform.scale(self.image , (96,96))
         self.rect = self.image.get_rect(center = self.rect.center)
 
 
