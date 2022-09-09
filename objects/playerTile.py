@@ -1,5 +1,6 @@
 import pygame
 import math
+from objects.laser import Lazer
 
 from shapes.tiles import Tile
 
@@ -13,12 +14,19 @@ class PlayerTile(Tile):
         self.rotation = 0
         self.direction = pygame.math.Vector2(0,0)
         self.speed = 1
-        
+        self.last_shot = 0
+        self.lazers_shot = pygame.sprite.Group()
         self.armed = False
+
 
 
     def get_input(self):
         keys = pygame.key.get_pressed()
+        if pygame.mouse.get_pressed()[0]:
+            if self.last_shot > 120 and self.armed:
+                print("shoot")
+                self.shoot()
+
         if keys[pygame.K_d]:
             self.direction.x = 1
         elif keys[pygame.K_a]:
@@ -33,14 +41,26 @@ class PlayerTile(Tile):
         else:
             self.direction.y = 0
 
+    def shoot(self):
+        player_pos_x , player_pos_y = self.rect.center
+        mouse_x , mouse_y = pygame.mouse.get_pos()
+        x_interval = mouse_x - player_pos_x
+        y_interval = mouse_y - player_pos_y
+
+        self.last_shot = 0
+        lazer = Lazer((self.rect.right , self.rect.top))
+        self.lazers_shot.add(lazer)
+        
+        
+
+
+    def get_lasers_shot(self) -> pygame.sprite.Group:
+        return self.lazers_shot
+
 
     def rotate_to_mouse(self):
         player_pos_x , player_pos_y = self.rect.center
         mouse_x , mouse_y = pygame.mouse.get_pos()
-
-        # x_interval = player_pos_x - mouse_x
-        # y_interval = player_pos_y - mouse_y
-
         x_interval = mouse_x - player_pos_x
         y_interval = mouse_y - player_pos_y
             
@@ -72,5 +92,6 @@ class PlayerTile(Tile):
         
         
     def update(self):
+        self.last_shot += 1
         self.rotate_to_mouse()
         self.get_input()

@@ -207,6 +207,11 @@ class Level:
 
     def run(self):
 
+
+        lazers = self.player.sprite.get_lasers_shot()
+        lazers.draw(self.surface)
+        lazers.update()
+
         #Collisions
         self.level_change_collision()
         self.horizontal_movement_collision()
