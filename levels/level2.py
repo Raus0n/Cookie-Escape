@@ -10,7 +10,7 @@ level_map = [
 "bb                                    bb",
 "bb                                    bb",
 "bb                                    bb",
-"bb                 M                  bb",
+"bb   A       A     A      A     A     bb",
 "bb                                    bb",
 "bb                                    bb",
 "bb    XXXXXXXXXXXXXXXXXXXXXXXXXX      bb",

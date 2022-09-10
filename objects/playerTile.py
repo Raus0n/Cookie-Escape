@@ -27,7 +27,7 @@ class PlayerTile(Tile):
 
         if keys[pygame.K_SPACE]:
             if self.armed:
-                if self.last_shot > 120:
+                if self.last_shot > 120 and self.ammo > 0:
                     print("shoot")
                     self.shoot()
 
@@ -59,6 +59,7 @@ class PlayerTile(Tile):
 
     def shoot(self):
         self.last_shot = 0
+        self.ammo -= 1
         
         if self.rotation == 90:
             lazer = Lazer((self.rect.right , self.rect.top))

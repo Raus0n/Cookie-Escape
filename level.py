@@ -1,10 +1,12 @@
+from pydoc import plain, plainpager
 import pygame
+from objects.ammo import Ammo
 from objects.gunItem import GunItem
 from objects.monster import Monster
 from objects.platform import Platform
 from objects.playerTile import PlayerTile
 from objects.tmnf import TMNFCar
-from objects.label import Label
+from objects.label import AmmoLabel, Label
 import levels.level1 as level1
 import levels.level2 as level2
 import levels.level3 as level3
@@ -79,14 +81,19 @@ class Level:
     def setup_level(self, level_layout , level_number , player_name):
         self.font = pygame.font.Font(".\\resources\\fonts\\VCR_OSD_MONO_1.001.ttf" , 64)
         self.dead_label = Label(self.surface , self.font , VirtualPos(0 , 0))
+
+
         self.tiles = pygame.sprite.Group()
         self.platform = pygame.sprite.Group()
         self.level_trigger = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.monster = pygame.sprite.GroupSingle()
         self.gun_item = pygame.sprite.GroupSingle()
+        self.ammo_group = pygame.sprite.Group()
         self.level_number = level_number
         self.killer_group = pygame.sprite.Group()
+        
+
 
         if level_number == 1:
             self.level_x_offset = level1.level_offset_x
@@ -114,6 +121,10 @@ class Level:
                     platform = Platform((x,y))
                     self.platform.add(platform)
 
+                if cell == "A":
+                    ammo = Ammo((x,y))
+                    self.ammo_group.add(ammo)
+
                 if cell == player_name:
                     player = PlayerTile(64 , (x ,y) , "grey")
                     self.player.add(player)
@@ -140,6 +151,17 @@ class Level:
                     self.level_trigger.add(level_trigger)
                 except:
                     pass
+
+        self.ammo_label = AmmoLabel(self.surface , self.font  , VirtualPos(0 , 900))
+        self.ammo_label.value = self.player.sprite.ammo
+
+    def ammo_collider(self):
+        player = self.player.sprite
+        for ammo in self.ammo_group.sprites():
+            if ammo.rect.colliderect(player.rect):
+                player.ammo += 1
+                self.ammo_group.remove(ammo)
+                # self.ammo_label.value += 1
 
     def kill_collision_check(self):
         player = self.player.sprite
@@ -194,9 +216,11 @@ class Level:
         player = self.player.sprite
         for borderTile in self.level_trigger.sprites():
             if borderTile.rect.colliderect(player.rect):
+                ammo_lab = self.ammo_label.value
                 arm = player.armed
                 rotation = player.rotation
                 rocket = player.has_rocket
+                ammo = player.ammo
                 if borderTile.level_trigger_number == 1:
                     if self.level_number == 2:
                         temp = self.player.sprite.rect.x
@@ -245,6 +269,8 @@ class Level:
                     self.player.sprite.arm()
                 self.player.sprite.rotate(rotation)
                 self.player.sprite.has_rocket = rocket
+                self.player.sprite.ammo = ammo
+                # self.ammo_label.value = ammo_lab
 
             
 
@@ -268,6 +294,7 @@ class Level:
         lazers.update()
 
         #Collisions
+        self.ammo_collider()
         self.level_change_collision()
         self.lazer_collider(lazers)
         self.horizontal_movement_collision()
@@ -285,6 +312,7 @@ class Level:
                 self.laybrinth_shifter()
             else:
                 self.world_shifter()
+        self.ammo_group.update(self.world_shift_x , self.world_shift_y)
         self.platform.update(self.world_shift_x , self.world_shift_y)
         self.killer_group.update(self.world_shift_x , self.world_shift_y)
         self.level_trigger.update(self.world_shift_x , self.world_shift_y)
@@ -296,6 +324,7 @@ class Level:
             self.world_shift_y = 0
 
         #Drawings
+        self.ammo_group.draw(self.surface)
         self.platform.draw(self.surface)
         self.killer_group.draw(self.surface)
         self.level_trigger.draw(self.surface)
@@ -304,6 +333,8 @@ class Level:
         self.tiles.draw(self.surface)
         if self.player_dead:
             self.dead_label.render()
+        self.ammo_label.value = self.player.sprite.ammo
+        self.ammo_label.render()
 
 
     
