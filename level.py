@@ -8,6 +8,7 @@ import levels.level1 as level1
 import levels.level2 as level2
 import levels.level3 as level3
 import levels.level4 as level4
+import levels.level5 as level5
 from objects.borderTile import BorderTile
 from shapes.invisibleTile import InvisibleTile
 from objects.killerTile import KillerTile
@@ -17,13 +18,15 @@ class Level:
 
     def __init__(self, level_data , surface):
         self.player_dead = False
+        self.level_x_offset = 0
+        self.level_y_offset = 0
         self.level_data = level_data
         self.surface = surface
         self.world_shift_x = 0
         self.world_shift_y = 0
         self.world_border = 64
         self.level_number = 1
-        self.setup_level(level_data , 1)
+        self.setup_level(level_data , 1 ,"P")
         self.universal_speed = 1
         
 
@@ -71,7 +74,7 @@ class Level:
             self.world_shift_y = 0
             player.speed = self.universal_speed
 
-    def setup_level(self, level_layout , level_number):
+    def setup_level(self, level_layout , level_number , player_name):
         self.font = pygame.font.Font(".\\resources\\fonts\\VCR_OSD_MONO_1.001.ttf" , 64)
         self.dead_label = Label(self.surface , self.font , VirtualPos(0 , 0))
 
@@ -86,23 +89,23 @@ class Level:
         self.killer_group = pygame.sprite.Group()
 
         if level_number == 1:
-            level_x_offset = level1.level_offset_x
-            level_y_offset = level1.level_offset_y
+            self.level_x_offset = level1.level_offset_x
+            self.level_y_offset = level1.level_offset_y
         elif level_number == 2:
-            level_x_offset = level2.level_offset_x
-            level_y_offset = level2.level_offset_y
-        elif level_number == 3:
-            level_x_offset = level3.level_offset_x
-            level_y_offset = level3.level_offset_y
+            self.level_x_offset = level2.level_offset_x
+            self.level_y_offset = level2.level_offset_y
         elif level_number == 4:
-            level_x_offset = level4.level_offset_x
-            level_y_offset = level4.level_offset_y
+            self.level_x_offset = level4.level_offset_x
+            self.level_y_offset = level4.level_offset_y
+        elif level_number == 5:
+            self.level_x_offset = level5.level_offset_x 
+            self.level_y_offset = level5.level_offset_y
             
 
         for row_index, row in enumerate(level_layout):
             for col_index, cell in enumerate(row):
-                x = (col_index - level_x_offset) * 64
-                y = (row_index - level_y_offset) * 64
+                x = (col_index - self.level_x_offset) * 64
+                y = (row_index - self.level_y_offset) * 64
                 if cell == "X":
                     tile = Tile(64 ,(x,y) , "black")
                     self.tiles.add(tile)
@@ -111,7 +114,7 @@ class Level:
                     platform = Platform((x,y))
                     self.platform.add(platform)
 
-                if cell == "P":
+                if cell == player_name:
                     player = PlayerTile(64 , (x ,y) , "grey")
                     self.player.add(player)
 
@@ -195,29 +198,44 @@ class Level:
                         temp = self.player.sprite.rect.x
                         level_layout = level1.level_map
                         self.level_number = 1
-                        self.setup_level(level_layout , self.level_number)
+                        self.setup_level(level_layout , self.level_number , "P")
                         self.player.sprite.rect.x = temp
                     elif self.level_number == 3 or self.level_number == 4:
                         temp = self.player.sprite.rect.y
                         level_layout = level1.level_map
                         self.level_number = 1
-                        self.setup_level(level_layout , self.level_number)
+                        self.setup_level(level_layout , self.level_number , "P")
                         self.player.sprite.rect.y = temp
                 elif borderTile.level_trigger_number == 2:
                     temp = self.player.sprite.rect.x
                     level_layout = level2.level_map
                     self.level_number = 2
-                    self.setup_level(level_layout , self.level_number)
+                    self.setup_level(level_layout , self.level_number , "P")
                     self.player.sprite.rect.x = temp
                 elif borderTile.level_trigger_number == 3:
-                    level_layout = level3.level_map
-                    self.level_number = 3
-                    self.setup_level(level_layout ,self.level_number)
+                    if self.level_number == 1:
+                        level_layout = level3.level_map
+                        self.level_number = 3
+                        self.level_x_offset = 32
+                        self.level_y_offset = 4
+                        self.setup_level(level_layout ,self.level_number , "P")
+                    elif self.level_number == 5:
+                        level_layout = level3.level_map
+                        self.level_number = 3
+                        self.level_x_offset = -4
+                        self.level_y_offset = 56
+                        self.setup_level(level_layout ,self.level_number , "p")
                 elif borderTile.level_trigger_number == 4:
                     temp = self.player.sprite.rect.y
                     level_layout = level4.level_map
                     self.level_number = 4
-                    self.setup_level(level_layout , self.level_number)
+                    self.setup_level(level_layout , self.level_number , "P")
+                    self.player.sprite.rect.y = temp
+                elif borderTile.level_trigger_number == 5:
+                    temp = self.player.sprite.rect.y
+                    level_layout = level5.level_map
+                    self.level_number = 5
+                    self.setup_level(level_layout , self.level_number , "P")
                     self.player.sprite.rect.y = temp
                 if arm:
                     self.player.sprite.arm()

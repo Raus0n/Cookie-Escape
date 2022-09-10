@@ -22,7 +22,7 @@ level_map = [
 "K   K   K   K       K   K       KKKK   K   Kb",
 "K   K   K   K       KKKKKKKKK   KKKK   K   Kb",
 "K   K   K   K       K                  K   Kb",
-"K   K   K   K   M   K                  K C Kb",
+"K   K   K   K       K                  K C Kb",
 "K   K   K   K       K                  K   Kb",
 "K   K   K   KKKKKKKKK   KKKKK   KKKKKKKKKKKKb",
 "K       K      K        K   K              Kb",
@@ -50,7 +50,7 @@ level_map = [
 "K        K   K         K           K       Kb",
 "K        K   K         K           K       Kb",
 "K        K   K         K           K       Kb",
-"K  M     K   KKKKKKK   K   K   KKKKKKKKK   Kb",
+"K        K   KKKKKKK   K   K   KKKKKKKKK   Kb",
 "K        K             K       K   K       Kb",
 "K        K             K       K   K       Kb",
 "K        K             K       K   K       Kb",
@@ -61,7 +61,7 @@ level_map = [
 "KKKKKK   KKKKKKKK   K   KKKKKKKK   KKKKK   Kb",
 "KKKKKK   KKKKKKKK   K   KKKKKKKK   KKKKK   Kb",
 "5               K              K           Kb",
-"5               K              K           Kb",
+"5  p            K              K           Kb",
 "5               K              K           Kb",
 "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKb",]
 level_settings = [len(level_map[0]) , len(level_map )]

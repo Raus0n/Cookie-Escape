@@ -42,8 +42,7 @@ class PlayerTile(Tile):
         elif keys[pygame.K_LEFT]:
             self.rotation = 180
             self.rotate(self.rotation)
-
-        if keys[pygame.K_d]:
+        elif keys[pygame.K_d]:
             self.direction.x = 1
         elif keys[pygame.K_a]:
             self.direction.x = -1

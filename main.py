@@ -2,26 +2,26 @@ import pygame
 from level import Level
 import levels.level1 as level1,os
 
-pygame.init()
-
-SCREEN_HEIGHT = 960
-SCREEN_WIDTH = 960
-
-BLACK = (0,0,0)
-WHITE = (255,255,255)
-RED_PLANET_BACKGROUND = (182, 54, 36)
-
-FPS = 60
-
-screen = pygame.display.set_mode((SCREEN_WIDTH , SCREEN_HEIGHT))
-pygame.display.set_caption("Based Game")
-
-level = Level(level1.level_map , screen)
 
 
 
 
 def main():
+    pygame.init()
+
+    SCREEN_HEIGHT = 960
+    SCREEN_WIDTH = 960
+
+    BLACK = (0,0,0)
+    WHITE = (255,255,255)
+    RED_PLANET_BACKGROUND = (182, 54, 36)
+
+    FPS = 60
+
+    screen = pygame.display.set_mode((SCREEN_WIDTH , SCREEN_HEIGHT))
+    pygame.display.set_caption("Based Game")
+
+    level = Level(level1.level_map , screen)
     # tmnf = pygame.Rect(100, 300, 105,80)
     clock = pygame.time.Clock()
     clock.tick(FPS)
@@ -33,6 +33,13 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    print("press")
+                    main()
+                    pygame.quit()
+
+            
 
         level.run()
         pygame.display.update()    
