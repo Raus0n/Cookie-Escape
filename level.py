@@ -162,6 +162,13 @@ class Level:
                 if player.direction.y < 0:
                     player.rect.top = tile.rect.bottom
 
+    def lazer_collider(self , lazers: pygame.sprite.Group):
+        for tiles in self.tiles.sprites():
+            for lazer in lazers.sprites():
+                if tiles.rect.colliderect(lazer.rect):
+                    lazers.remove(lazer)
+
+
     def level_change_collision(self):
         player = self.player.sprite
         for borderTile in self.level_trigger.sprites():
@@ -214,6 +221,7 @@ class Level:
 
         #Collisions
         self.level_change_collision()
+        self.lazer_collider(lazers)
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
         self.kill_collision_check()
