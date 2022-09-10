@@ -1,6 +1,7 @@
 from pydoc import plain, plainpager
 import pygame
 from objects.ammo import Ammo
+from objects.crown import Crown
 from objects.crushableTile import CrushAbleTile
 from objects.end import End
 from objects.gunItem import GunItem
@@ -102,6 +103,7 @@ class Level:
         self.killer_group = pygame.sprite.Group()
         self.rocket = pygame.sprite.GroupSingle()
         self.crushable_tiles = pygame.sprite.Group()
+        self.crown = pygame.sprite.GroupSingle()
         
 
 
@@ -162,6 +164,10 @@ class Level:
                 if cell == "R":
                     rocket = Rocket((x,y))
                     self.rocket.add(rocket)
+
+                if cell == "c":
+                    crown = Crown((x,y))
+                    self.crown.add(crown)
 
                 try:
                     cell = int(cell)
@@ -376,6 +382,7 @@ class Level:
                         self.laybrinth_shifter()
                 else:
                     self.world_shifter()
+            self.crown.update(self.world_shift_x , self.world_shift_y)
             self.ammo_group.update(self.world_shift_x , self.world_shift_y)
             self.crushable_tiles.update(self.world_shift_x , self.world_shift_y)
             self.rocket.update(self.world_shift_x , self.world_shift_y)
@@ -390,6 +397,7 @@ class Level:
                 self.world_shift_y = 0
 
         #Drawings
+        self.crown.draw(self.surface)
         self.ammo_group.draw(self.surface)
         self.crushable_tiles.draw(self.surface)
         self.rocket.draw(self.surface)
