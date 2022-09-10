@@ -3,6 +3,7 @@ import pygame
 from objects.ammo import Ammo
 from objects.crushableTile import CrushAbleTile
 from objects.gunItem import GunItem
+from objects.info import Info
 from objects.monster import Monster
 from objects.platform import Platform
 from objects.playerTile import PlayerTile
@@ -32,11 +33,12 @@ class Level:
         self.world_border = 64
         self.level_number = 1
         self.setup_level(level_data , 1 ,"P")
-        self.universal_speed = 1
+        self.universal_speed = 2
         self.monster_dead = False
         self.hitSound = pygame.mixer.Sound(".\\resources\\sound\\hitsound.mp3")
         self.pickupSound = pygame.mixer.Sound(".\\resources\\sound\\ammoPickup.mp3")
         self.movable = True
+        self.state = "Info"
         
 
     def world_shifter(self):
@@ -233,7 +235,6 @@ class Level:
                     player.rect.bottom = tile.rect.top
                 if player.direction.y < 0:
                     player.rect.top = tile.rect.bottom
-                self.movable = False
 
         # for crushables in self.crushable_tiles.sprites():
         #     if crushables.rect.colliderect(player.rect):
@@ -327,7 +328,6 @@ class Level:
 
 
     def run(self):
-        self.movable = True
 
         # try:
         #     if not self.monster_dead:
@@ -358,24 +358,25 @@ class Level:
             self.pickup_gun()
 
         #Updates
-        if not self.player_dead:
-            if  self.level_number == 3 or self.level_number == 5:
-                if self.movable:
-                    self.laybrinth_shifter()
-            else:
-                self.world_shifter()
-        self.ammo_group.update(self.world_shift_x , self.world_shift_y)
-        self.crushable_tiles.update(self.world_shift_x , self.world_shift_y)
-        self.rocket.update(self.world_shift_x , self.world_shift_y)
-        self.platform.update(self.world_shift_x , self.world_shift_y)
-        self.killer_group.update(self.world_shift_x , self.world_shift_y)
-        self.level_trigger.update(self.world_shift_x , self.world_shift_y)
-        self.tiles.update(self.world_shift_x , self.world_shift_y)
-        if not self.player_dead:
-            self.player.update()
-        elif self.player_dead == True:
-            self.world_shift_x = 0
-            self.world_shift_y = 0
+        if self.state == "Game":
+            if not self.player_dead:
+                if  self.level_number == 3 or self.level_number == 5:
+                    if self.movable:
+                        self.laybrinth_shifter()
+                else:
+                    self.world_shifter()
+            self.ammo_group.update(self.world_shift_x , self.world_shift_y)
+            self.crushable_tiles.update(self.world_shift_x , self.world_shift_y)
+            self.rocket.update(self.world_shift_x , self.world_shift_y)
+            self.platform.update(self.world_shift_x , self.world_shift_y)
+            self.killer_group.update(self.world_shift_x , self.world_shift_y)
+            self.level_trigger.update(self.world_shift_x , self.world_shift_y)
+            self.tiles.update(self.world_shift_x , self.world_shift_y)
+            if not self.player_dead:
+                self.player.update()
+            elif self.player_dead == True:
+                self.world_shift_x = 0
+                self.world_shift_y = 0
 
         #Drawings
         self.ammo_group.draw(self.surface)
@@ -391,6 +392,13 @@ class Level:
             self.dead_label.render()
         self.ammo_label.value = self.player.sprite.ammo
         self.ammo_label.render()
+        if self.state == "Info":
+            font = pygame.font.Font(".\\resources\\fonts\\VCR_OSD_MONO_1.001.ttf" , 24)
+            infoLabel = Info(font , self.surface)
+            info_gr = pygame.sprite.GroupSingle()
+            info_gr.add(infoLabel)
+            info_gr.draw(self.surface)
+            infoLabel.render()
 
 
     

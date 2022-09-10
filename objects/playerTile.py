@@ -13,13 +13,14 @@ class PlayerTile(Tile):
         self.rect = self.image.get_rect(topleft = pos)
         self.rotation = 0
         self.direction = pygame.math.Vector2(0,0)
-        self.speed = 1
+        self.speed = 2
         self.last_shot = 0
         self.lazers_shot = pygame.sprite.Group()
         self.armed = False
         self.has_rocket = False
         self.ammo = 0
         self.lazerr_sound = pygame.mixer.Sound(".\\resources\\sound\\laserShoot.mp3")
+        self.state = "Info"
 
 
 

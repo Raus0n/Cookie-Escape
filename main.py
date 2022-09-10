@@ -18,6 +18,8 @@ def main():
 
     FPS = 60
 
+    paper_sound = pygame.mixer.Sound(".\\resources\\sound\\info_open.mp3")
+
     screen = pygame.display.set_mode((SCREEN_WIDTH , SCREEN_HEIGHT))
     pygame.display.set_caption("Based Game")
 
@@ -35,9 +37,16 @@ def main():
                 pygame.quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
-                    print("press")
                     main()
                     pygame.quit()
+                if event.key == pygame.K_TAB:
+                    if level.state == "Game":
+                        level.state = "Info"
+                        paper_sound.play()
+                    elif level.state == "Info":
+                        level.state = "Game"
+                        paper_sound.play()
+
 
             
 
