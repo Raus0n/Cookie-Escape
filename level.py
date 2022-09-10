@@ -167,7 +167,7 @@ class Level:
         for borderTile in self.level_trigger.sprites():
             if borderTile.rect.colliderect(player.rect):
                 arm = player.armed
-                print(arm)
+                rotation = player.rotation
                 if borderTile.level_trigger_number == 1:
                     if self.level_number == 2:
                         temp = self.player.sprite.rect.x
@@ -199,7 +199,7 @@ class Level:
                     self.player.sprite.rect.y = temp
                 if arm:
                     self.player.sprite.arm()
-
+                self.player.sprite.rotate(rotation)
 
             
 

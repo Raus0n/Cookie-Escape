@@ -26,6 +26,19 @@ class PlayerTile(Tile):
             if self.last_shot > 120 and self.armed:
                 print("shoot")
                 self.shoot()
+        
+        if keys[pygame.K_UP]:
+            self.rotation = 90
+            self.rotate(self.rotation)
+        elif keys[pygame.K_DOWN]:
+            self.rotation = 270
+            self.rotate(self.rotation)
+        elif keys[pygame.K_RIGHT]:
+            self.rotation = 0
+            self.rotate(self.rotation)
+        elif keys[pygame.K_LEFT]:
+            self.rotation = 180
+            self.rotate(self.rotation)
 
         if keys[pygame.K_d]:
             self.direction.x = 1
@@ -71,6 +84,14 @@ class PlayerTile(Tile):
         return self.lazers_shot
 
 
+    def rotate(self , degree):
+        self.image = self.original_image
+        self.image = pygame.transform.scale(self.image , (96 , 96))
+        self.image = pygame.transform.rotate(self.image , degree)
+        self.rect = self.image.get_rect(center = self.rect.center)
+
+
+
     def rotate_to_mouse(self):
         player_pos_x , player_pos_y = self.rect.center
         mouse_x , mouse_y = pygame.mouse.get_pos()
@@ -106,5 +127,4 @@ class PlayerTile(Tile):
         
     def update(self):
         self.last_shot += 1
-        self.rotate_to_mouse()
         self.get_input()
