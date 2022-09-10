@@ -21,7 +21,7 @@ class Level:
         self.world_border = 64
         self.level_number = 1
         self.setup_level(level_data , 1)
-        self.universal_speed = 1
+        self.universal_speed = 1.5
 
     def world_shifter(self):
         player = self.player.sprite
