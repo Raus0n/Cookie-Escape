@@ -1,5 +1,6 @@
 import pygame
 from objects.gunItem import GunItem
+from objects.monster import Monster
 from objects.platform import Platform
 from objects.playerTile import PlayerTile
 from objects.tmnf import TMNFCar
@@ -28,6 +29,7 @@ class Level:
         self.level_number = 1
         self.setup_level(level_data , 1 ,"P")
         self.universal_speed = 1
+        self.monster_dead = False
         
 
     def world_shifter(self):
@@ -77,13 +79,11 @@ class Level:
     def setup_level(self, level_layout , level_number , player_name):
         self.font = pygame.font.Font(".\\resources\\fonts\\VCR_OSD_MONO_1.001.ttf" , 64)
         self.dead_label = Label(self.surface , self.font , VirtualPos(0 , 0))
-
-
-        
         self.tiles = pygame.sprite.Group()
         self.platform = pygame.sprite.Group()
         self.level_trigger = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.monster = pygame.sprite.GroupSingle()
         self.gun_item = pygame.sprite.GroupSingle()
         self.level_number = level_number
         self.killer_group = pygame.sprite.Group()
@@ -129,6 +129,10 @@ class Level:
                 if cell == "G":
                     gunItem = GunItem((x,y))
                     self.gun_item.add(gunItem)
+                
+                if cell == "C":
+                    monster = Monster((x,y))
+                    self.monster.add(monster)
 
                 try:
                     cell = int(cell)
@@ -247,6 +251,16 @@ class Level:
 
 
     def run(self):
+
+        try:
+            if not self.monster_dead:
+                self.monster.draw(self.surface)
+                self.monster.update(self.world_shift_x , self.world_shift_y , self.player.sprite)
+                spit_group = self.monster.sprite.get_spit()
+                spit_group.draw(self.surface)
+                spit_group.update(self.world_shift_x , self.world_shift_y)
+        except:
+            pass
 
 
         lazers = self.player.sprite.get_lasers_shot()

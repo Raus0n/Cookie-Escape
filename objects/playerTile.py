@@ -18,6 +18,7 @@ class PlayerTile(Tile):
         self.lazers_shot = pygame.sprite.Group()
         self.armed = False
         self.has_rocket = False
+        self.ammo = 0
 
 
 
