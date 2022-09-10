@@ -13,7 +13,7 @@ class PlayerTile(Tile):
         self.rect = self.image.get_rect(topleft = pos)
         self.rotation = 0
         self.direction = pygame.math.Vector2(0,0)
-        self.speed = 1.5
+        self.speed = 1
         self.last_shot = 0
         self.lazers_shot = pygame.sprite.Group()
         self.armed = False

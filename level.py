@@ -2,6 +2,7 @@ import pygame
 from objects.gunItem import GunItem
 from objects.playerTile import PlayerTile
 from objects.tmnf import TMNFCar
+from objects.label import Label
 import levels.level1 as level1
 import levels.level2 as level2
 import levels.level3 as level3
@@ -10,6 +11,7 @@ from objects.borderTile import BorderTile
 from shapes.invisibleTile import InvisibleTile
 from objects.killerTile import KillerTile
 from shapes.tiles import Tile
+from virtualPos import VirtualPos
 class Level:
 
     def __init__(self, level_data , surface):
@@ -21,7 +23,8 @@ class Level:
         self.world_border = 64
         self.level_number = 1
         self.setup_level(level_data , 1)
-        self.universal_speed = 1.5
+        self.universal_speed = 1
+        
 
     def world_shifter(self):
         player = self.player.sprite
@@ -68,6 +71,11 @@ class Level:
             player.speed = self.universal_speed
 
     def setup_level(self, level_layout , level_number):
+        self.font = pygame.font.Font(".\\resources\\fonts\\VCR_OSD_MONO_1.001.ttf" , 64)
+        self.dead_label = Label(self.surface , self.font , VirtualPos(0 , 0))
+
+
+        
         self.tiles = pygame.sprite.Group()
         self.level_trigger = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
@@ -226,7 +234,6 @@ class Level:
         self.vertical_movement_collision()
         self.kill_collision_check()
 
-
         if self.player.sprite.armed == False:
             self.gun_item.draw(self.surface)
             self.gun_item.update(self.world_shift_x , self.world_shift_y)
@@ -238,7 +245,6 @@ class Level:
                 self.laybrinth_shifter()
             else:
                 self.world_shifter()
-            
         self.killer_group.update(self.world_shift_x , self.world_shift_y)
         self.level_trigger.update(self.world_shift_x , self.world_shift_y)
         self.tiles.update(self.world_shift_x , self.world_shift_y)
@@ -254,6 +260,8 @@ class Level:
         if not self.player_dead:
             self.player.draw(self.surface)
         self.tiles.draw(self.surface)
+        if self.player_dead:
+            self.dead_label.render()
 
 
     
