@@ -1,5 +1,6 @@
 import pygame
 from objects.gunItem import GunItem
+from objects.platform import Platform
 from objects.playerTile import PlayerTile
 from objects.tmnf import TMNFCar
 from objects.label import Label
@@ -77,6 +78,7 @@ class Level:
 
         
         self.tiles = pygame.sprite.Group()
+        self.platform = pygame.sprite.Group()
         self.level_trigger = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.gun_item = pygame.sprite.GroupSingle()
@@ -104,6 +106,10 @@ class Level:
                 if cell == "X":
                     tile = Tile(64 ,(x,y) , "black")
                     self.tiles.add(tile)
+
+                if cell == "M":
+                    platform = Platform((x,y))
+                    self.platform.add(platform)
 
                 if cell == "P":
                     player = PlayerTile(64 , (x ,y) , "grey")
@@ -183,6 +189,7 @@ class Level:
             if borderTile.rect.colliderect(player.rect):
                 arm = player.armed
                 rotation = player.rotation
+                rocket = player.has_rocket
                 if borderTile.level_trigger_number == 1:
                     if self.level_number == 2:
                         temp = self.player.sprite.rect.x
@@ -215,6 +222,7 @@ class Level:
                 if arm:
                     self.player.sprite.arm()
                 self.player.sprite.rotate(rotation)
+                self.player.sprite.has_rocket = rocket
 
             
 
@@ -245,6 +253,7 @@ class Level:
                 self.laybrinth_shifter()
             else:
                 self.world_shifter()
+        self.platform.update(self.world_shift_x , self.world_shift_y)
         self.killer_group.update(self.world_shift_x , self.world_shift_y)
         self.level_trigger.update(self.world_shift_x , self.world_shift_y)
         self.tiles.update(self.world_shift_x , self.world_shift_y)
@@ -255,6 +264,7 @@ class Level:
             self.world_shift_y = 0
 
         #Drawings
+        self.platform.draw(self.surface)
         self.killer_group.draw(self.surface)
         self.level_trigger.draw(self.surface)
         if not self.player_dead:
