@@ -21,7 +21,7 @@ def main():
     paper_sound = pygame.mixer.Sound(".\\resources\\sound\\info_open.mp3")
 
     screen = pygame.display.set_mode((SCREEN_WIDTH , SCREEN_HEIGHT))
-    pygame.display.set_caption("Based Game")
+    pygame.display.set_caption("Cookie Escape")
 
     level = Level(level1.level_map , screen)
     # tmnf = pygame.Rect(100, 300, 105,80)
