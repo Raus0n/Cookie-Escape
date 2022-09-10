@@ -252,15 +252,15 @@ class Level:
 
     def run(self):
 
-        try:
-            if not self.monster_dead:
-                self.monster.draw(self.surface)
-                self.monster.update(self.world_shift_x , self.world_shift_y , self.player.sprite)
-                spit_group = self.monster.sprite.get_spit()
-                spit_group.draw(self.surface)
-                spit_group.update(self.world_shift_x , self.world_shift_y)
-        except:
-            pass
+        # try:
+        #     if not self.monster_dead:
+        #         self.monster.draw(self.surface)
+        #         self.monster.update(self.world_shift_x , self.world_shift_y , self.player.sprite)
+        #         spit_group = self.monster.sprite.get_spit()
+        #         spit_group.draw(self.surface)
+        #         spit_group.update(self.world_shift_x , self.world_shift_y)
+        # except:
+        #     pass
 
 
         lazers = self.player.sprite.get_lasers_shot()
