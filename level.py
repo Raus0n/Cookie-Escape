@@ -34,6 +34,9 @@ class Level:
         self.setup_level(level_data , 1 ,"P")
         self.universal_speed = 1
         self.monster_dead = False
+        self.hitSound = pygame.mixer.Sound(".\\resources\\sound\\hitsound.mp3")
+        self.pickupSound = pygame.mixer.Sound(".\\resources\\sound\\ammoPickup.mp3")
+        self.movable = True
         
 
     def world_shifter(self):
@@ -173,6 +176,7 @@ class Level:
             if ammo.rect.colliderect(player.rect):
                 player.ammo += 1
                 self.ammo_group.remove(ammo)
+                self.pickupSound.play()
                 # self.ammo_label.value += 1
 
     def kill_collision_check(self):
@@ -191,6 +195,7 @@ class Level:
             if self.gun_item.sprite.rect.colliderect(player.rect):
                 player.armed = True
                 player.arm()
+                self.pickupSound.play()
         except:
             pass
 
@@ -204,13 +209,18 @@ class Level:
                     player.rect.right = tile.rect.left
                 if player.direction.x < 0:
                     player.rect.left = tile.rect.right
+                self.movable = False
 
-        for crushables in self.crushable_tiles.sprites():
-            if crushables.rect.colliderect(player.rect):
-                if player.direction.x > 0:
-                    player.rect.right = tile.rect.left
-                if player.direction.x < 0:
-                    player.rect.left = tile.rect.right
+        # for crushables in self.crushable_tiles.sprites():
+        #     if crushables.rect.colliderect(player.rect):
+        #         print("Before X:" , self.player.sprite.rect.x)
+        #         if player.direction.x > 0:
+        #             player.rect.right = tile.rect.left
+        #         if player.direction.x < 0:
+        #             player.rect.left = tile.rect.right
+        #         print("After X:"  , self.player.sprite.rect.x)
+
+
 
 
     def vertical_movement_collision(self):
@@ -223,13 +233,16 @@ class Level:
                     player.rect.bottom = tile.rect.top
                 if player.direction.y < 0:
                     player.rect.top = tile.rect.bottom
+                self.movable = False
 
-        for crushables in self.crushable_tiles.sprites():
-            if crushables.rect.colliderect(player.rect):
-                if player.direction.y > 0:
-                    player.rect.bottom = tile.rect.top
-                if player.direction.y < 0:
-                    player.rect.top = tile.rect.bottom
+        # for crushables in self.crushable_tiles.sprites():
+        #     if crushables.rect.colliderect(player.rect):
+        #         print("Before Y:" , self.player.sprite.rect.y)
+        #         if player.direction.y > 0:
+        #             player.rect.bottom = tile.rect.top
+        #         if player.direction.y < 0:
+        #             player.rect.top = tile.rect.bottom
+        #         print("After Y:" , self.player.sprite.rect.y)
 
 
     def lazer_collider(self , lazers: pygame.sprite.Group):
@@ -237,12 +250,15 @@ class Level:
             for tiles in self.tiles.sprites():
                 if tiles.rect.colliderect(lazer.rect):
                     lazers.remove(lazer)
+                    tiles.remove(self.tiles)
+                    self.hitSound.play()
 
             for crushables in self.crushable_tiles.sprites():
                 for lazer in lazers.sprites():
                     if crushables.rect.colliderect(lazer.rect):
                         lazers.remove(lazer)
                         self.crushable_tiles.remove(crushables)
+                        self.hitSound.play()
 
 
     def level_change_collision(self):
@@ -301,6 +317,7 @@ class Level:
                 if arm:
                     self.player.sprite.arm()
                 self.player.sprite.rotate(rotation)
+                self.player.sprite.rotation = rotation
                 self.player.sprite.has_rocket = rocket
                 self.player.sprite.ammo = ammo
                 # self.ammo_label.value = ammo_lab
@@ -310,6 +327,7 @@ class Level:
 
 
     def run(self):
+        self.movable = True
 
         # try:
         #     if not self.monster_dead:
@@ -342,7 +360,8 @@ class Level:
         #Updates
         if not self.player_dead:
             if  self.level_number == 3 or self.level_number == 5:
-                self.laybrinth_shifter()
+                if self.movable:
+                    self.laybrinth_shifter()
             else:
                 self.world_shifter()
         self.ammo_group.update(self.world_shift_x , self.world_shift_y)

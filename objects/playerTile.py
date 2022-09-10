@@ -7,7 +7,7 @@ from shapes.tiles import Tile
 class PlayerTile(Tile):
     def __init__(self, size, pos, color) -> None:
         super().__init__(size, pos, color)
-        self.original_image = pygame.image.load("resources\\images\\player_cookie.png")
+        self.original_image = pygame.image.load(".\\resources\\images\\player_cookie.png")
         self.image = self.original_image
         self.image = pygame.transform.scale(self.image , (96 , 96))
         self.rect = self.image.get_rect(topleft = pos)
@@ -19,6 +19,7 @@ class PlayerTile(Tile):
         self.armed = False
         self.has_rocket = False
         self.ammo = 0
+        self.lazerr_sound = pygame.mixer.Sound(".\\resources\\sound\\laserShoot.mp3")
 
 
 
@@ -60,6 +61,7 @@ class PlayerTile(Tile):
     def shoot(self):
         self.last_shot = 0
         self.ammo -= 1
+        self.lazerr_sound.play()
         
         if self.rotation == 90:
             lazer = Lazer((self.rect.right , self.rect.top))
