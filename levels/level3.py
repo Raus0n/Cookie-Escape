@@ -60,9 +60,9 @@ level_map = [
 "KKKKKK              K              K       Kb",
 "KKKKKK   KKKKKKKK   K   KKKKKKKK   KKKKK   Kb",
 "KKKKKK   KKKKKKKK   K   KKKKKKKK   KKKKK   Kb",
-"K               K              K           Kb",
-"K Ç             K              K           Kb",
-"K               K              K           Kb",
+"5               K              K           Kb",
+"5               K              K           Kb",
+"5               K              K           Kb",
 "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKb",]
 level_settings = [len(level_map[0]) , len(level_map )]
 level_offset_x = 32

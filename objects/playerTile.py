@@ -22,11 +22,13 @@ class PlayerTile(Tile):
 
     def get_input(self):
         keys = pygame.key.get_pressed()
-        if pygame.mouse.get_pressed()[0]:
-            if self.last_shot > 120 and self.armed:
-                print("shoot")
-                self.shoot()
-        
+
+        if keys[pygame.K_SPACE]:
+            if self.armed:
+                if self.last_shot > 120:
+                    print("shoot")
+                    self.shoot()
+
         if keys[pygame.K_UP]:
             self.rotation = 90
             self.rotate(self.rotation)
@@ -55,25 +57,36 @@ class PlayerTile(Tile):
             self.direction.y = 0
 
     def shoot(self):
-        player_pos_x , player_pos_y = self.rect.center
-        mouse_x , mouse_y = pygame.mouse.get_pos()
-        x_interval = mouse_x - player_pos_x
-        y_interval = mouse_y - player_pos_y
-
-        rot = math.atan(y_interval / x_interval)
-
-        print(rot)
-
-        x = math.cos(rot)
-        y = math.sin(rot)
-
-
         self.last_shot = 0
-        lazer = Lazer((self.rect.right , self.rect.top))
-
-        lazer.direction.x = x
-        lazer.direction.y = y
-        pygame.transform.rotate(lazer.image , self.rotation)
+        
+        if self.rotation == 90:
+            lazer = Lazer((self.rect.right , self.rect.top))
+            lazer.rect.x -= 12
+            lazer.direction.y = -1
+            lazer.direction.x = 0
+        elif self.rotation == 270:
+            lazer = Lazer((self.rect.left , self.rect.bottom))
+            lazer.rect.x += 8
+            lazer.rect.top = self.rect.bottom
+            lazer.direction.y = 1.5
+            lazer.direction.x = 0
+        elif self.rotation == 0:
+            lazer = Lazer((self.rect.right , self.rect.bottom))
+            lazer.image = pygame.Surface((64 , 8))
+            lazer.image.fill("red")
+            lazer.rect = lazer.image.get_rect(topleft = (self.rect.right , self.rect.bottom))
+            lazer.rect.y -= 12
+            lazer.direction.y = 0
+            lazer.direction.x = 1.5
+        elif self.rotation == 180:
+            lazer = Lazer((self.rect.right , self.rect.bottom))
+            lazer.image = pygame.Surface((64 , 8))
+            lazer.image.fill("red")
+            lazer.rect = lazer.image.get_rect(topleft = (self.rect.left , self.rect.top))
+            lazer.rect.right = self.rect.left
+            lazer.rect.y += 8
+            lazer.direction.y = 0
+            lazer.direction.x = -1
 
         self.lazers_shot.add(lazer)
         
