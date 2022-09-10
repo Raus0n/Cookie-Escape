@@ -2,6 +2,7 @@ from pydoc import plain, plainpager
 import pygame
 from objects.ammo import Ammo
 from objects.crushableTile import CrushAbleTile
+from objects.end import End
 from objects.gunItem import GunItem
 from objects.info import Info
 from objects.monster import Monster
@@ -191,6 +192,15 @@ class Level:
                 self.world_shift_x = 0
                 self.world_shift_y = 0
                 
+    def rocket_collider(self):
+        try:
+            if self.rocket.sprite.rect.colliderect(self.player.sprite.rect):
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_e]:
+                    self.state = "End"
+        except:
+            pass
+
     def pickup_gun(self):
         try:
             player = self.player.sprite
@@ -345,6 +355,7 @@ class Level:
         lazers.update()
 
         #Collisions
+        self.rocket_collider()
         self.ammo_collider()
         self.level_change_collision()
         self.lazer_collider(lazers)
@@ -399,6 +410,10 @@ class Level:
             info_gr.add(infoLabel)
             info_gr.draw(self.surface)
             infoLabel.render()
+
+        if self.state == "End":
+            endLabel = End(self.surface) 
+            endLabel.render()
 
 
     

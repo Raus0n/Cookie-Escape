@@ -7,7 +7,7 @@ class Info(pygame.sprite.Sprite):
         self.image = pygame.Surface((726 , 576))
         self.image.fill("white")
         self.rect = self.image.get_rect(topleft = (96 , 192))
-        self.value = [" - You're an officer of Cookie Spaceguards" , " - You crashed into this planet", " - There's a emergency rocket in this planet"  ," - Find the rocket and escape.", " - Use a gun to smash rocks." ," - Use WASD to move", " - Arrow Keys to rotate", " - R to reset", " - E to interact." , " - Tab to open or close this menu"]
+        self.value = [" - You're an officer of Cookie Spaceguards" , " - You crashed into this red planet", " - There's a emergency rocket in this planet"  ," - Find the rocket and escape.", " - If you touch orange tiles, you die.", " - Use a gun to smash rocks." , " - Use WASD to move", " - Arrow Keys to rotate", " - R to reset", " - E to interact." , " - Tab to open or close this menu"]
         self.font = font
         self.display = display
 

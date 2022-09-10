@@ -5,7 +5,7 @@ class Rocket(pygame.sprite.Sprite):
     def __init__(self , pos) -> None:
         super().__init__()
         self.image = pygame.image.load("./resources/images/rocket.png")
-        self.image = pygame.transform.scale(self.image , (256 , 256))
+        self.image = pygame.transform.scale(self.image , (512 , 512))
         self.rect = self.image.get_rect(topleft = pos)
         print(self.rect.x , self.rect.y)
         print("load")
