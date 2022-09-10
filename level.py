@@ -1,10 +1,12 @@
 from pydoc import plain, plainpager
 import pygame
 from objects.ammo import Ammo
+from objects.crushableTile import CrushAbleTile
 from objects.gunItem import GunItem
 from objects.monster import Monster
 from objects.platform import Platform
 from objects.playerTile import PlayerTile
+from objects.rocket import Rocket
 from objects.tmnf import TMNFCar
 from objects.label import AmmoLabel, Label
 import levels.level1 as level1
@@ -92,6 +94,8 @@ class Level:
         self.ammo_group = pygame.sprite.Group()
         self.level_number = level_number
         self.killer_group = pygame.sprite.Group()
+        self.rocket = pygame.sprite.GroupSingle()
+        self.crushable_tiles = pygame.sprite.Group()
         
 
 
@@ -145,6 +149,14 @@ class Level:
                     monster = Monster((x,y))
                     self.monster.add(monster)
 
+                if cell == "V":
+                    crushableTile = CrushAbleTile(64 , (x,y))
+                    self.crushable_tiles.add(crushableTile)
+
+                if cell == "R":
+                    rocket = Rocket((x,y))
+                    self.rocket.add(rocket)
+
                 try:
                     cell = int(cell)
                     level_trigger = BorderTile((x,y) , (2,2) , cell)
@@ -193,6 +205,13 @@ class Level:
                 if player.direction.x < 0:
                     player.rect.left = tile.rect.right
 
+        for crushables in self.crushable_tiles.sprites():
+            if crushables.rect.colliderect(player.rect):
+                if player.direction.x > 0:
+                    player.rect.right = tile.rect.left
+                if player.direction.x < 0:
+                    player.rect.left = tile.rect.right
+
 
     def vertical_movement_collision(self):
         player = self.player.sprite
@@ -205,11 +224,25 @@ class Level:
                 if player.direction.y < 0:
                     player.rect.top = tile.rect.bottom
 
+        for crushables in self.crushable_tiles.sprites():
+            if crushables.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.rect.bottom = tile.rect.top
+                if player.direction.y < 0:
+                    player.rect.top = tile.rect.bottom
+
+
     def lazer_collider(self , lazers: pygame.sprite.Group):
-        for tiles in self.tiles.sprites():
-            for lazer in lazers.sprites():
+        for lazer in lazers.sprites():
+            for tiles in self.tiles.sprites():
                 if tiles.rect.colliderect(lazer.rect):
                     lazers.remove(lazer)
+
+            for crushables in self.crushable_tiles.sprites():
+                for lazer in lazers.sprites():
+                    if crushables.rect.colliderect(lazer.rect):
+                        lazers.remove(lazer)
+                        self.crushable_tiles.remove(crushables)
 
 
     def level_change_collision(self):
@@ -308,11 +341,13 @@ class Level:
 
         #Updates
         if not self.player_dead:
-            if  self.level_number == 3:
+            if  self.level_number == 3 or self.level_number == 5:
                 self.laybrinth_shifter()
             else:
                 self.world_shifter()
         self.ammo_group.update(self.world_shift_x , self.world_shift_y)
+        self.crushable_tiles.update(self.world_shift_x , self.world_shift_y)
+        self.rocket.update(self.world_shift_x , self.world_shift_y)
         self.platform.update(self.world_shift_x , self.world_shift_y)
         self.killer_group.update(self.world_shift_x , self.world_shift_y)
         self.level_trigger.update(self.world_shift_x , self.world_shift_y)
@@ -325,6 +360,8 @@ class Level:
 
         #Drawings
         self.ammo_group.draw(self.surface)
+        self.crushable_tiles.draw(self.surface)
+        self.rocket.draw(self.surface)
         self.platform.draw(self.surface)
         self.killer_group.draw(self.surface)
         self.level_trigger.draw(self.surface)
